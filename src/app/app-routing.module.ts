@@ -15,6 +15,14 @@ const routes: Routes = [
     path: 'crear-matriz',
     loadChildren: () => import('./Paginas/crear-matriz/crear-matriz.module').then( m => m.CrearMatrizPageModule)
   },
+  {
+    path: 'menu',
+    loadChildren: () => import('./Paginas/menu/menu.module').then( m => m.MenuPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./Paginas/login/login.module').then( m => m.LoginPageModule)
+  },
 ];
 
 @NgModule({
