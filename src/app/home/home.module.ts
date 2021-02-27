@@ -6,6 +6,9 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
+// Bluetooth
+import { BluetoothSerial } from "@ionic-native/bluetooth-serial/ngx";
+
 
 @NgModule({
   imports: [
@@ -14,6 +17,10 @@ import { HomePageRoutingModule } from './home-routing.module';
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage]
+  declarations: [HomePage],
+  providers: [
+    BluetoothSerial
+  ]
 })
+
 export class HomePageModule {}
