@@ -11,6 +11,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'crear-matriz',
+    loadChildren: () => import('./Paginas/crear-matriz/crear-matriz.module').then( m => m.CrearMatrizPageModule)
+  },
 ];
 
 @NgModule({

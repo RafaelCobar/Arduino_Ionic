@@ -1,15 +1,35 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>
-            BLE Scanner
+        <ion-title class="ion-text-center">
+            Bienvenido Aplicacion Grupo 9
         </ion-title>
-        <ion-button (click)="activarBluetooth()" slot="end" *ngIf="conectado == false">
-            <ion-icon name="Bluetooth"></ion-icon>
-            <p>Buscar</p>
-        </ion-button>
     </ion-toolbar>
 </ion-header>
 
+<ion-content>
+    <div class="container">
+
+        <div class="container" *ngIf="conectado == false">
+            <button type="button" class="btn btn-primary btn-lg btn-block mt-3" (click)="activarBluetooth()">
+                Buscar Dispositivos
+            </button>
+        </div>
+
+        <ul class="list-group mt-3" *ngIf="conectado == true">
+            <li class="list-group-item" *ngFor="let dispositivo of dispositivos" (click)="conectar(dispositivo.address)">
+                <div class="col-12">
+                    {{dispositivo.name || 'Unnamed'}} <br> {{dispositivo.id}}
+                </div>
+            </li>
+        </ul>
+
+    </div>
+
+
+</ion-content>
+
+
+<!-- 
 <ion-content>
     <ion-list *ngIf="conectado == false">
         <ion-card-content ion-item *ngFor="let dispositivo of dispositivos">
@@ -261,4 +281,4 @@
     </div>
 
 
-</ion-content>
+</ion-content> -->
