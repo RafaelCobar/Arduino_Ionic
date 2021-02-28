@@ -38,7 +38,7 @@ export class MenuPage implements OnInit {
   }
 
 
-  // Enviar informacion
+  // Enviar informacion , Nunca enviar una A, T  o números, si no se arruina la cinta y el reloj
   enviarInformacion(caracter: string) {    
     this.bluetoothSerial.write(caracter).then(
       (response) => {
