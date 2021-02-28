@@ -54,7 +54,7 @@ export class MenuPage implements OnInit {
   verificarLectura(){
     setInterval(() => {
         this.leerInfoBluetooth();
-    }, 1000);
+    }, 500);
   }
 
   //recibir información
@@ -63,7 +63,7 @@ export class MenuPage implements OnInit {
     .then((number: any) => {
         this.bluetoothSerial.read()
         .then((data: any) => {
-          // Data es un arreglo
+          // Data es un arreglo A qui es donde severifica lo que envia proteus
         });
     });
   }
@@ -110,7 +110,7 @@ export class MenuPage implements OnInit {
   empezarTime(){
     setInterval(() => {
         this.actualizarTiempo();
-    }, 1400);
+    }, 1000);
   }
 
   actualizarTiempo(){
@@ -127,6 +127,7 @@ export class MenuPage implements OnInit {
       this.minutos++;
     }
     this.segundos++;
+    this.enviarInformacion(`T${String(Math.floor(m)).slice(-2)}${s}`);
   }
 
 }

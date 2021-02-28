@@ -60,7 +60,8 @@ export class HomePage {
     );
 
     this.bluetoothService.sendBluetoothSerial(this.bluetoothSerial);
-    this.router.navigate(['/login']);
+    // this.router.navigate(['/login']); // TODO habilitar
+    this.router.navigate(['/menu']); //TODO borrar =  por el momento que se vaya al menu 
   }
 
 
