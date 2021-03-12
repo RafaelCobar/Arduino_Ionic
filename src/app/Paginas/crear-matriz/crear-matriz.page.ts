@@ -50,7 +50,17 @@ export class CrearMatrizPage implements OnInit {
     );
   }
 
+  iniciar(){
+    for(let i=0; i<8; i++){
+      for(let j=0; j<8; j++){
+        this.banderas[i][j] = false;
+      }
+    }
+    this.enviarInformacion('*');
+  }
+
   desconectar() {
+    this.enviarInformacion("/");
     this.bluetoothSerial.disconnect();
     this.mensajeAlerta('Dispositivo Desconectado');
     this.router.navigate(['/home']);

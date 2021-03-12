@@ -32,7 +32,7 @@ export class LoginPage implements OnInit {
   verificarLectura(){
     setInterval(() => {
         this.leerInfoBluetooth();
-    }, 500);
+    }, 200);
   }
 
   leerInfoBluetooth(){

@@ -1,6 +1,17 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>{{tiempo | async}}</ion-title>
+        <ion-title>
+            <div class="row">
+                <div class="col-6">
+                    {{tiempo}}
+                </div>
+                <div class="col-6 text-right">
+                    <ion-icon name="thermometer"></ion-icon>
+                    {{temperatura}}°C
+
+                </div>
+            </div>
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -9,25 +20,28 @@
         <h4>Estaciones</h4>
     </ion-item-divider>
     <div class="container mt-1">
-
         <div>
-            <button type="button" class="btn btn-primary btn-lg btn-block mt-1">Estacion 1</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block mt-1" [disabled]="!estacion1" (click)="encenderEstacion1()">Estacion 1</button>
         </div>
         <div>
-            <button type="button" class="btn btn-primary btn-lg btn-block mt-1">Estacion 2</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block mt-1" [disabled]="!estacion2" (click)="encenderEstacion2()">Estacion 2</button>
         </div>
         <div>
-            <button type="button" class="btn btn-primary btn-lg btn-block mt-1">Estacion 3</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block mt-1" [disabled]="!estacion3" (click)="encenderEstacion3()">Estacion 3</button>
         </div>
     </div>
+
+    <!-- <ion-item-divider class="mt-3">
+        <h5>{{info}}</h5>
+    </ion-item-divider> -->
 
     <ion-item-divider class="mt-3">
         <h4>Cinta Transportadora</h4>
     </ion-item-divider>
-    <div class="container mt-1">
 
+    <div class="container mt-1">
         <div>
-            <button type="button" class="btn btn-secondary btn-lg btn-block mt-1" (click)="enviarInformacion('A')">Cinta Transportadora</button>
+            <button type="button" class="btn btn-secondary btn-lg btn-block mt-1" (click)="enviarInformacion('A')"><ion-icon name="sync"></ion-icon>Cinta Transportadora</button>
         </div>
     </div>
 
@@ -38,7 +52,7 @@
     <div class="container mt-1">
 
         <div>
-            <button type="button" class="btn btn-warning btn-lg btn-block mt-1">Emergencia</button>
+            <button type="button" class="btn btn-warning btn-lg btn-block mt-1" (click)="salir()"><ion-icon name="warning"></ion-icon>Emergencia</button>
         </div>
     </div>
 
@@ -47,7 +61,7 @@
     </ion-item-divider>
     <div class="container mt-1">
         <div>
-            <button type="button" class="btn btn-success btn-lg btn-block mt-1">Aceptar</button>
+            <button type="button" class="btn btn-success btn-lg btn-block mt-1" (click)="salir()" [disabled]="!btnAceptar"><ion-icon name="checkmark-circle"></ion-icon>Aceptar</button>
         </div>
     </div>
 
