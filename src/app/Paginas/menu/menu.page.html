@@ -3,7 +3,7 @@
         <ion-title>
             <div class="row">
                 <div class="col-6">
-                    {{tiempo}}
+                    {{tiempo | async}}
                 </div>
                 <div class="col-6 text-right">
                     <ion-icon name="thermometer"></ion-icon>
@@ -31,9 +31,6 @@
         </div>
     </div>
 
-    <!-- <ion-item-divider class="mt-3">
-        <h5>{{info}}</h5>
-    </ion-item-divider> -->
 
     <ion-item-divider class="mt-3">
         <h4>Cinta Transportadora</h4>
@@ -70,8 +67,12 @@
         <h5>Desconectar bluetooth</h5>
     </ion-item-divider>
     <div class="mt-3 mb-4">
-        <button type="button" class="btn btn-danger btn-lg btn-block mt-3 mb-3" (click)="desconectar()">Desconectar</button>
+        <button type="button" class="btn btn-danger btn-lg btn-block mt-3 mb-3" (click)="desconectar()"> <ion-icon name="log-out"></ion-icon>Desconectar</button>
     </div>
 
+
+    <ion-item-divider class="mt-3">
+        <h5 class="text-center">{{info}}</h5>
+    </ion-item-divider>
 
 </ion-content>

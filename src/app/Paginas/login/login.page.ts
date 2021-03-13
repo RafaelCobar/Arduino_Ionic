@@ -10,6 +10,7 @@ import { BluetoothService } from 'src/app/Servicio/bluetooth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  timer1;
 
   // Constructor
   constructor(
@@ -30,7 +31,7 @@ export class LoginPage implements OnInit {
   
   // Que cada 1/2 segundo verifique si no le han enviado información
   verificarLectura(){
-    setInterval(() => {
+    this.timer1 = setInterval(() => {
         this.leerInfoBluetooth();
     }, 200);
   }
@@ -40,8 +41,9 @@ export class LoginPage implements OnInit {
     .then((number: any) => {
         this.bluetoothSerial.read()
         .then((data: any) => {
-          if (data[0] == "1") {       
-            this.mensajeAlerta('Usuario Ingresado Correctamente');     
+          if (data[0] == "$") {       
+            this.mensajeAlerta('Usuario Ingresado Correctamente');  
+            clearInterval(this.timer1);   
             this.bluetoothSerial.clear();
             this.bluetoothService.sendBluetoothSerial(this.bluetoothSerial);
             this.router.navigate(['/crear-matriz']);

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { AlertController } from '@ionic/angular';
 import { BluetoothService } from 'src/app/Servicio/bluetooth.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -15,12 +16,15 @@ export class MenuPage implements OnInit {
   estacion3: boolean;
   btnAceptar : boolean;
   terminarEns: boolean;
-  tiempo : String;
-  minutos : number;
-  segundos : number;
+  tiempo : BehaviorSubject<string> = new BehaviorSubject('00:00');
+  minutos : number = 0;
+  segundos : number = 0;
   temperatura : string ;
   temp : number;
   info: string;
+  desconexion : boolean;
+  timer1;
+  timer2;
 
 
   // Constructor
@@ -32,6 +36,7 @@ export class MenuPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.desconexion = false;
     this.estacion1 = true;
     this.estacion2 = false;
     this.estacion3 = false;
@@ -41,9 +46,9 @@ export class MenuPage implements OnInit {
     this.segundos = 0;
     this.temperatura = "";
     this.temp = 0;
-    this.tiempo = "";
+    this.tiempo = new BehaviorSubject('00:00');
     this.info = "";
-
+    this.empezarTime();
     this.verificarLectura();
     
     this.bluetoothService.$getbluetoothSerial
@@ -69,7 +74,7 @@ export class MenuPage implements OnInit {
 
   // Que cada 1/2 segundo verifique si no le han enviado información
   verificarLectura(){
-    setInterval(() => {
+    this.timer2 = setInterval(() => {
         this.leerInfoBluetooth();
     }, 200);
   }
@@ -81,12 +86,35 @@ export class MenuPage implements OnInit {
         this.bluetoothSerial.read()
         .then((data: any[]) => {
           if(data.length > 0){
-            if(data.length >= 4){
-              this.tiempo = data[0] + ":" + data[1] + data[2];
-              this.temperatura = data.toString().substring(3, data.length-1);
+            if(data.length >= 3){
+              /*
+              if(data[0] == 'R'){
+                this.tiempo = data[1] + ":" + data[2] + data[3];
+              }
+              */
+              if(data[0] == 'T'){
+                this.temperatura = data.toString().substring(1, data.length-1);
+              }
               this.info = data.toString();
+              this.info = `${this.info.substring(1, this.info.length - 1)}°C`;
+              this.temp = Number(this.temperatura);
             }
-            this.temp = Number(this.temperatura);
+            if(data[0] == '#'){
+              clearInterval(this.timer1);   
+              clearInterval(this.timer2);   
+              this.tiempo.next('00:00');
+              this.bluetoothSerial.clear();
+              this.bluetoothService.sendBluetoothSerial(this.bluetoothSerial);
+              this.router.navigate(['/crear-matriz']);              
+            }
+            if(data[0] == '/'){
+              clearInterval(this.timer1);   
+              clearInterval(this.timer2);  
+              this.tiempo.next('00:00');   
+              this.bluetoothSerial.disconnect();
+              this.mensajeAlerta('Dispositivo Desconectado');
+              this.router.navigate(['/home']);
+            }
             this.verificarTemperatura();
             this.bluetoothSerial.clear();
           }
@@ -134,17 +162,11 @@ export class MenuPage implements OnInit {
   salir(){
     this.temp = 35;
     this.enviarInformacion("F");
-    this.bluetoothSerial.clear();
-    this.bluetoothService.sendBluetoothSerial(this.bluetoothSerial);
-    this.router.navigate(['/crear-matriz']);
   }
 
 
-  desconectar() {    
+  desconectar() {   
     this.enviarInformacion("/");
-    this.bluetoothSerial.disconnect();
-    this.mensajeAlerta('Dispositivo Desconectado');
-    this.router.navigate(['/home']);
   }
 
   async mensajeAlerta(mensaje: string) {
@@ -158,6 +180,29 @@ export class MenuPage implements OnInit {
       ],
     });
     alert.present();
+  }
+
+  empezarTime(){
+    this.timer1 = setInterval(() => {
+        this.actualizarTiempo();
+    }, 1000);
+  }
+
+  actualizarTiempo(){
+    let m : any = this.minutos;
+    let s : any = this.segundos;
+
+    m = String('0' + Math.floor(m)).slice(-2);
+    s = String('0' + Math.floor(s)).slice(-2);
+
+    const texto = `${m}:${s}`;
+    this.tiempo.next(texto);
+    if(this.segundos >= 59){
+      this.segundos = -1;
+      this.minutos++;
+    }
+    this.segundos++;
+    this.enviarInformacion(`T${String(Math.floor(m)).slice(-2)}${s}`);
   }
 
 
