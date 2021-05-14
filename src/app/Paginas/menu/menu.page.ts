@@ -87,11 +87,6 @@ export class MenuPage implements OnInit {
         .then((data: any[]) => {
           if(data.length > 0){
             if(data.length >= 3){
-              /*
-              if(data[0] == 'R'){
-                this.tiempo = data[1] + ":" + data[2] + data[3];
-              }
-              */
               if(data[0] == 'T'){
                 this.temperatura = data.toString().substring(1, data.length-1);
               }
